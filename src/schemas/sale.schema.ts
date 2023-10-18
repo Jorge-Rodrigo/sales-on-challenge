@@ -7,6 +7,8 @@ const saleCreateSchema = z.object({
   products: z.array(productCreateSchema),
   paymentMethod: z.string(),
   portion: z.number().nullable(),
+  customDueDates: z.array(z.string()).optional().nullable(),
+  customInstallmentPrice: z.array(z.number()).optional().nullable(),
 });
 
 const returnSaleSchema = z.object({
@@ -16,12 +18,18 @@ const returnSaleSchema = z.object({
   totalPrice: z.number(),
   paymentMethod: z.string(),
   portion: z.number(),
-  installmentPrice: z.number().transform((value) => {
-    return parseFloat(value.toFixed(2));
-  }),
+  installmentPrice: z
+    .number()
+    .transform((value) => {
+      return parseFloat(value.toFixed(2));
+    })
+    .optional(),
+  customDueDates: z.array(z.string().or(z.date())).optional().nullable(),
+  customInstallmentPrice: z.array(z.number()).optional().nullable(),
   createdAt: z.string().or(z.date()),
   updatedAt: z.string().or(z.date()),
 });
+
 const allPortionsSchema = z.object({
   price: z.number().transform((value) => {
     return parseFloat(value.toFixed(2));

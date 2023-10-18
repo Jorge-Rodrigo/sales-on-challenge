@@ -33,7 +33,13 @@ class Sale {
   portion: number | null;
 
   @Column({ type: "decimal" })
-  installmentPrice: number;
+  installmentPrice: number | null;
+
+  @Column("simple-array", { nullable: true })
+  customDueDates: string[] | null | undefined;
+
+  @Column("simple-array", { nullable: true })
+  customInstallmentPrice: number[] | null | undefined;
 
   @CreateDateColumn({ type: "date" })
   createdAt: string | Date;

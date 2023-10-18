@@ -12,6 +12,9 @@ class Product {
   @Column({ type: "decimal" })
   price: number;
 
+  @Column({ type: "int", default: 1 })
+  amount: number;
+
   @ManyToOne(() => Sale)
   sale: Sale;
 }

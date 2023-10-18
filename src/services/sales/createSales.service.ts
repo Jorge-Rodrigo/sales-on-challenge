@@ -25,6 +25,8 @@ const createSaleService = async (
     totalPrice: 0,
     products: [],
     installmentPrice: 0,
+    customDueDates: null,
+    customInstallmentPrice: null,
   });
   if (clientRequest) {
     const newClient = clientRepository.create(clientRequest);
@@ -40,18 +42,55 @@ const createSaleService = async (
       ...productData,
       sale: newSale,
     });
-    newSale.totalPrice += product.price;
+    newSale.totalPrice += product.price * product.amount;
     newSale.products.push(product);
     await productRepository.save(product);
   }
 
-  if (newSale.portion && newSale.portion > 1) {
-    newSale.installmentPrice = newSale.totalPrice / newSale.portion;
+  if (saleData.paymentMethod === "À vista") {
+    newSale.portion = 1;
+    newSale.installmentPrice = newSale.totalPrice;
+  } else if (
+    saleData.paymentMethod === "Parcelado" &&
+    newSale.totalPrice >= 50
+  ) {
+    if (saleData.customDueDates && saleData.customInstallmentPrice) {
+      if (
+        saleData.customDueDates.length !== saleData.portion ||
+        saleData.customInstallmentPrice.length !== saleData.portion
+      ) {
+        throw new Error(
+          "Quantidade de datas/preços de parcelas não corresponde à quantidade de parcelas."
+        );
+      }
+
+      newSale.portion = saleData.portion;
+      newSale.customDueDates = saleData.customDueDates;
+      newSale.customInstallmentPrice = saleData.customInstallmentPrice;
+
+      if (
+        newSale.customInstallmentPrice.reduce(
+          (acc, price) => acc + price,
+          0
+        ) !== newSale.totalPrice
+      ) {
+        throw new Error(
+          "O valor total não corresponde à soma dos valores das parcelas."
+        );
+      }
+    } else {
+      if (newSale.portion && newSale.portion > 1 && newSale.totalPrice >= 50) {
+        newSale.installmentPrice = newSale.totalPrice / newSale.portion;
+      }
+    }
+  }
+  await saleRepository.save(newSale);
+  const sale = returnSaleSchema.parse(newSale);
+
+  if (sale.customDueDates && sale.customInstallmentPrice) {
+    sale.installmentPrice = undefined;
   }
 
-  await saleRepository.save(newSale);
-
-  const sale = returnSaleSchema.parse(newSale);
   return sale;
 };
 
