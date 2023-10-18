@@ -4,6 +4,7 @@ import {
   saleCreateSchema,
   returnSaleSchema,
   returnSalePayment,
+  returnAllSales,
 } from "./sale.schema";
 
 export {
@@ -14,4 +15,5 @@ export {
   clientCreateSchema,
   productCreateSchema,
   returnSalePayment,
+  returnAllSales,
 };

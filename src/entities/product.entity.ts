@@ -15,7 +15,7 @@ class Product {
   @Column({ type: "int", default: 1 })
   amount: number;
 
-  @ManyToOne(() => Sale)
+  @ManyToOne(() => Sale, { onDelete: "CASCADE" })
   sale: Sale;
 }
 

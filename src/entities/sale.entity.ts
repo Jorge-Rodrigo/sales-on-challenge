@@ -16,11 +16,11 @@ class Sale {
   @PrimaryGeneratedColumn("increment")
   id: number;
 
-  @OneToOne(() => Client, { nullable: true })
+  @OneToOne(() => Client, { nullable: true, onDelete: "CASCADE" })
   @JoinColumn()
   client: Client | null;
 
-  @OneToMany(() => Product, (product) => product.sale)
+  @OneToMany(() => Product, (product) => product.sale, { onDelete: "CASCADE" })
   products: Product[];
 
   @Column({ type: "decimal" })

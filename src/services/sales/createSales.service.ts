@@ -3,6 +3,7 @@ import { AppDataSource } from "../../data-source";
 import { Sale, Client, Product } from "../../entities";
 import { tSaleRequest, tSaleReturn } from "../../interfaces";
 import { returnSaleSchema, returnClientSchema } from "../../schemas";
+import { AppError } from "../../error";
 
 const createSaleService = async (
   saleData: tSaleRequest
@@ -36,19 +37,22 @@ const createSaleService = async (
   }
 
   await saleRepository.save(newSale);
-
+  let totalPrice = 0;
   for (const productData of productsRequest) {
     const product = productRepository.create({
       ...productData,
       sale: newSale,
     });
-    newSale.totalPrice += product.price * product.amount;
+
+    totalPrice += product.price * product.amount;
     newSale.products.push(product);
     await productRepository.save(product);
   }
+  newSale.totalPrice = totalPrice;
 
   if (saleData.paymentMethod === "À vista") {
     newSale.portion = 1;
+
     newSale.installmentPrice = newSale.totalPrice;
   } else if (
     saleData.paymentMethod === "Parcelado" &&
@@ -59,8 +63,9 @@ const createSaleService = async (
         saleData.customDueDates.length !== saleData.portion ||
         saleData.customInstallmentPrice.length !== saleData.portion
       ) {
-        throw new Error(
-          "Quantidade de datas/preços de parcelas não corresponde à quantidade de parcelas."
+        throw new AppError(
+          "Quantidade de datas/preços de parcelas não corresponde à quantidade de parcelas.",
+          400
         );
       }
 
@@ -74,8 +79,9 @@ const createSaleService = async (
           0
         ) !== newSale.totalPrice
       ) {
-        throw new Error(
-          "O valor total não corresponde à soma dos valores das parcelas."
+        throw new AppError(
+          "O valor total não corresponde à soma dos valores das parcelas.",
+          400
         );
       }
     } else {

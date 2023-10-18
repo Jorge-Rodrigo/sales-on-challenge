@@ -10,6 +10,7 @@ const productCreateSchema = z.object({
       const decimalCount = (price.toString().split(".")[1] || []).length;
       return decimalCount <= 2;
     }),
+  amount: z.number(),
 });
 
 const returnProductSchema = productCreateSchema.extend({

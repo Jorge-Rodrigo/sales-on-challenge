@@ -4,6 +4,7 @@ import {
   tSalePaymentReturn,
   tSaleRequest,
   tSaleReturn,
+  tSaleReturnAll,
 } from "./sale.interface";
 
 export {
@@ -14,4 +15,5 @@ export {
   tProductRequest,
   tProductReturn,
   tSalePaymentReturn,
+  tSaleReturnAll,
 };

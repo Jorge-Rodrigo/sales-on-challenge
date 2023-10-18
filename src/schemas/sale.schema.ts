@@ -30,6 +30,8 @@ const returnSaleSchema = z.object({
   updatedAt: z.string().or(z.date()),
 });
 
+const returnAllSales = returnSaleSchema.array();
+
 const allPortionsSchema = z.object({
   price: z.number().transform((value) => {
     return parseFloat(value.toFixed(2));
@@ -43,4 +45,9 @@ const returnSalePayment = z.object({
   allPortions: z.array(allPortionsSchema),
 });
 
-export { saleCreateSchema, returnSaleSchema, returnSalePayment };
+export {
+  saleCreateSchema,
+  returnSaleSchema,
+  returnSalePayment,
+  returnAllSales,
+};
