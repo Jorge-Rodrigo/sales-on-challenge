@@ -1,3 +1,6 @@
-import { createSaleController } from "./sales.controller";
+import {
+  createSaleController,
+  listPaymentDateController,
+} from "./sales.controller";
 
-export { createSaleController };
+export { createSaleController, listPaymentDateController };

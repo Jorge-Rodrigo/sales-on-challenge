@@ -29,8 +29,11 @@ class Sale {
   @Column({ length: 100 })
   paymentMethod: string;
 
-  @Column({ type: "int", default: 0 })
+  @Column({ type: "int", default: 1 })
   portion: number | null;
+
+  @Column({ type: "decimal" })
+  installmentPrice: number;
 
   @CreateDateColumn({ type: "date" })
   createdAt: string | Date;

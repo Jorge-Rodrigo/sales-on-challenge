@@ -3,7 +3,7 @@ import { clientCreateSchema, returnClientSchema } from "./client.schema";
 import { productCreateSchema, returnProductSchema } from "./product.schema";
 
 const saleCreateSchema = z.object({
-  client: clientCreateSchema,
+  client: clientCreateSchema.optional(),
   products: z.array(productCreateSchema),
   paymentMethod: z.string(),
   portion: z.number().nullable(),
@@ -11,13 +11,28 @@ const saleCreateSchema = z.object({
 
 const returnSaleSchema = z.object({
   id: z.number(),
-  client: returnClientSchema,
+  client: returnClientSchema.optional(),
   products: z.array(returnProductSchema),
   totalPrice: z.number(),
   paymentMethod: z.string(),
-  portion: z.number().nullable(),
+  portion: z.number(),
+  installmentPrice: z.number().transform((value) => {
+    return parseFloat(value.toFixed(2));
+  }),
   createdAt: z.string().or(z.date()),
   updatedAt: z.string().or(z.date()),
 });
+const allPortionsSchema = z.object({
+  price: z.number().transform((value) => {
+    return parseFloat(value.toFixed(2));
+  }),
+  date: z.string().or(z.date()),
+});
 
-export { saleCreateSchema, returnSaleSchema };
+const returnSalePayment = z.object({
+  totalPrice: z.string(),
+  portions: z.number(),
+  allPortions: z.array(allPortionsSchema),
+});
+
+export { saleCreateSchema, returnSaleSchema, returnSalePayment };

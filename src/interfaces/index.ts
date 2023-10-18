@@ -1,6 +1,10 @@
 import { tClientRequest, tClientReturn } from "./client.interface";
 import { tProductRequest, tProductReturn } from "./product.interface";
-import { tSaleRequest, tSaleReturn } from "./sale.interface";
+import {
+  tSalePaymentReturn,
+  tSaleRequest,
+  tSaleReturn,
+} from "./sale.interface";
 
 export {
   tSaleRequest,
@@ -9,4 +13,5 @@ export {
   tClientReturn,
   tProductRequest,
   tProductReturn,
+  tSalePaymentReturn,
 };

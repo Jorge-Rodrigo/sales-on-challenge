@@ -16,21 +16,22 @@ const createSaleService = async (
     AppDataSource.getRepository(Product);
 
   const productsRequest = saleData.products;
-  const clientRequest = saleData.client;
-
-  const newClient = clientRepository.create(clientRequest);
-
-  await clientRepository.save(newClient);
-  const client = returnClientSchema.parse(newClient);
+  const clientRequest = saleData?.client;
 
   const { products: _, client: __, ...saleRequest } = saleData;
 
   const newSale = saleRepository.create({
     ...saleRequest,
-    client: client,
     totalPrice: 0,
     products: [],
+    installmentPrice: 0,
   });
+  if (clientRequest) {
+    const newClient = clientRepository.create(clientRequest);
+    await clientRepository.save(newClient);
+    const client = returnClientSchema.parse(newClient);
+    newSale.client = client;
+  }
 
   await saleRepository.save(newSale);
 
@@ -42,6 +43,10 @@ const createSaleService = async (
     newSale.totalPrice += product.price;
     newSale.products.push(product);
     await productRepository.save(product);
+  }
+
+  if (newSale.portion && newSale.portion > 1) {
+    newSale.installmentPrice = newSale.totalPrice / newSale.portion;
   }
 
   await saleRepository.save(newSale);
