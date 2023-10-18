@@ -30,7 +30,7 @@ class Sale {
   paymentMethod: string;
 
   @Column({ type: "int", default: 0 })
-  portion: number;
+  portion: number | null;
 
   @CreateDateColumn({ type: "date" })
   createdAt: string | Date;

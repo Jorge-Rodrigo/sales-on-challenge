@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
+import { createSaleService } from "../services";
 
 const createSaleController = async (req: Request, res: Response) => {
-  // const newUser = await createContactService(req.body, req.user.id);
+  const newUser = await createSaleService(req.body);
 
-  return res.status(201).json("teste");
+  return res.status(201).json(newUser);
 };
 
 export { createSaleController };
