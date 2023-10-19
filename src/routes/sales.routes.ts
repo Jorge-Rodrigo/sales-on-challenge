@@ -8,12 +8,14 @@ import {
 } from "../controllers";
 import { ensureValidBodyMiddlewares } from "../middlewares/ensureValidBody.middlewares";
 import { saleCreateSchema } from "../schemas";
+import { ensureDataConflictMiddleware } from "../middlewares/ensureDataConflict.middlewares";
 
 const salesRoutes = Router();
 
 salesRoutes.post(
   "",
   ensureValidBodyMiddlewares(saleCreateSchema),
+  ensureDataConflictMiddleware,
   createSaleController
 );
 salesRoutes.get("", listSalesController);
