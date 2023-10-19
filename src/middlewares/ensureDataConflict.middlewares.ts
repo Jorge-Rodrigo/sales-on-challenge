@@ -15,9 +15,11 @@ const ensureDataConflictMiddleware = async (
   }
 
   if (
-    req.body.customDueDates &&
-    req.body.customInstallmentPrice &&
-    req.body.portion
+    (req.body.customDueDates &&
+      req.body.customInstallmentPrice &&
+      req.body.portion &&
+      req.body.customDueDates.length > 1) ||
+    req.body.customInstallmentPrice.length > 1
   ) {
     if (
       req.body.customInstallmentPrice.reduce(
