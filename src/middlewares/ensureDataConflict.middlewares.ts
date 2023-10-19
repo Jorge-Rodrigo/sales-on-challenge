@@ -30,16 +30,18 @@ const ensureDataConflictMiddleware = async (
         400
       );
     }
+
     if (
-      req.body.customDueDates.lenght !== req.body.portion ||
-      req.body.customInstallmentPrice.lenght !== req.body.portion
+      req.body.customDueDates.length !== req.body.portion ||
+      req.body.customInstallmentPrice.length !== req.body.portion
     ) {
       throw new AppError(
         "Quantidade de datas/preços de parcelas não corresponde à quantidade de parcelas.",
         400
       );
+    } else {
+      return next();
     }
-
     return next();
   }
 
