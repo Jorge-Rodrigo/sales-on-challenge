@@ -4,7 +4,12 @@ import { Sale } from "../../entities";
 
 const listSalesService = async (): Promise<Sale[]> => {
   const saleRepository: Repository<Sale> = AppDataSource.getRepository(Sale);
-  const allSales = await saleRepository.find();
+  const allSales = await saleRepository.find({
+    relations: {
+      client: true,
+      products: true,
+    },
+  });
 
   return allSales;
 };

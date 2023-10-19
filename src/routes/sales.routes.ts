@@ -4,6 +4,7 @@ import {
   deleteSaleController,
   listPaymentDateController,
   listSalesController,
+  updateSaleController,
 } from "../controllers";
 import { ensureValidBodyMiddlewares } from "../middlewares/ensureValidBody.middlewares";
 import { saleCreateSchema } from "../schemas";
@@ -17,6 +18,7 @@ salesRoutes.post(
 );
 salesRoutes.get("", listSalesController);
 salesRoutes.get("/:id/payment-plan", listPaymentDateController);
+salesRoutes.patch("/:id", updateSaleController);
 salesRoutes.delete("/:id", deleteSaleController);
 
 export { salesRoutes };

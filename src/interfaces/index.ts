@@ -3,6 +3,7 @@ import { tProductRequest, tProductReturn } from "./product.interface";
 import {
   tSalePaymentReturn,
   tSaleRequest,
+  tSaleRequestUpdate,
   tSaleReturn,
   tSaleReturnAll,
 } from "./sale.interface";
@@ -16,4 +17,5 @@ export {
   tProductReturn,
   tSalePaymentReturn,
   tSaleReturnAll,
+  tSaleRequestUpdate,
 };

@@ -30,6 +30,8 @@ const returnSaleSchema = z.object({
   updatedAt: z.string().or(z.date()),
 });
 
+const saleUpdateSchema = saleCreateSchema.partial();
+
 const returnAllSales = returnSaleSchema.array();
 
 const allPortionsSchema = z.object({
@@ -50,4 +52,5 @@ export {
   returnSaleSchema,
   returnSalePayment,
   returnAllSales,
+  saleUpdateSchema,
 };

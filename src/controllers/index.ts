@@ -3,6 +3,7 @@ import {
   deleteSaleController,
   listPaymentDateController,
   listSalesController,
+  updateSaleController,
 } from "./sales.controller";
 
 export {
@@ -10,4 +11,5 @@ export {
   listPaymentDateController,
   listSalesController,
   deleteSaleController,
+  updateSaleController,
 };

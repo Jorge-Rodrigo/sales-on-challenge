@@ -4,6 +4,7 @@ import {
   deleteSaleService,
   listSalePaymentPlanService,
   listSalesService,
+  updateSaleService,
 } from "../services";
 
 const createSaleController = async (req: Request, res: Response) => {
@@ -25,6 +26,11 @@ const listPaymentDateController = async (req: Request, res: Response) => {
   return res.status(200).json(listPaymentPlan);
 };
 
+const updateSaleController = async (req: Request, res: Response) => {
+  const saleUpdated = await updateSaleService(req.body, Number(req.params.id));
+  return res.status(201).json(saleUpdated);
+};
+
 const deleteSaleController = async (req: Request, res: Response) => {
   await deleteSaleService(Number(req.params.id));
   return res.status(204).json();
@@ -35,4 +41,5 @@ export {
   listPaymentDateController,
   listSalesController,
   deleteSaleController,
+  updateSaleController,
 };

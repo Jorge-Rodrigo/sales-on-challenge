@@ -5,6 +5,7 @@ import {
   returnSaleSchema,
   returnSalePayment,
   returnAllSales,
+  saleUpdateSchema,
 } from "./sale.schema";
 
 export {
@@ -16,4 +17,5 @@ export {
   productCreateSchema,
   returnSalePayment,
   returnAllSales,
+  saleUpdateSchema,
 };

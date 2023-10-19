@@ -90,6 +90,7 @@ const createSaleService = async (
       }
     }
   }
+
   await saleRepository.save(newSale);
   const sale = returnSaleSchema.parse(newSale);
 
