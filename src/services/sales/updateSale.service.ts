@@ -12,9 +12,6 @@ const updateSaleService = async (
   const saleRepository: Repository<Sale> = AppDataSource.getRepository(Sale);
   const clientRepository: Repository<Client> =
     AppDataSource.getRepository(Client);
-
-  const productRepository: Repository<Product> =
-    AppDataSource.getRepository(Product);
   const findSale = await saleRepository.findOne({
     where: {
       id: SaleId,
@@ -24,11 +21,15 @@ const updateSaleService = async (
       client: true,
     },
   });
+
   if (!findSale) {
     throw new AppError("Venda não encontrada!");
   }
   const newClient = saleBody.client;
-  const newProducts = saleBody.products;
+  saleBody.portion = Number(saleBody.portion);
+  saleBody.customInstallmentPrice = saleBody.customInstallmentPrice?.map(
+    (item) => Number(item)
+  );
 
   const totalPrice = Number(findSale.totalPrice);
   findSale.totalPrice = totalPrice;
@@ -41,27 +42,11 @@ const updateSaleService = async (
   const installmentPrice = Number(findSale.installmentPrice);
   findSale.installmentPrice = installmentPrice;
 
-  findSale.products.forEach((product) => {
-    product.price = Number(product.price);
-  });
-
   if (newClient) {
     const clientUpdated = clientRepository.create(newClient);
     await clientRepository.save(clientUpdated);
     const client = returnClientSchema.parse(clientUpdated);
     findSale.client = client;
-  }
-  if (newProducts) {
-    for (const productData of newProducts) {
-      const product = productRepository.create({
-        ...productData,
-        sale: findSale,
-      });
-
-      findSale.totalPrice += product.price * product.amount;
-      findSale.products.push(product);
-      await productRepository.save(product);
-    }
   }
 
   if (saleBody.paymentMethod && saleBody.paymentMethod === "À vista") {

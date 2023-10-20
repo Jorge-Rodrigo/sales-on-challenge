@@ -54,6 +54,7 @@ const createSaleService = async (
     newSale.portion = 1;
 
     newSale.installmentPrice = newSale.totalPrice;
+    await saleRepository.save(newSale);
   } else if (
     saleData.paymentMethod === "Parcelado" &&
     newSale.totalPrice >= 50
@@ -95,7 +96,12 @@ const createSaleService = async (
   const sale = returnSaleSchema.parse(newSale);
 
   if (sale.customDueDates && sale.customInstallmentPrice) {
-    sale.installmentPrice = undefined;
+    if (
+      sale.customDueDates?.length > 1 ||
+      sale.customInstallmentPrice?.length > 1
+    ) {
+      sale.installmentPrice = undefined;
+    }
   }
 
   return sale;
