@@ -109,6 +109,67 @@ Se tudo der certo essa sera a resposta:
 }
 ```
 
+<h2 align ='center'> Editando uma Venda </h2>
+
+`PATCH /sales/{id da venda} -  FORMATO DA REQUISIÇÃO`
+
+<p>È possivel editar apenas esses campos, Caso mande a parcela também é necessario manda as datas e os preços customizados, mas é possivel enviar apenas o cliente também!</p>
+
+```json
+{
+  "client": {
+    "name": "Marcio"
+  },
+  "paymentMethod": "Parcelado",
+  "portion": 4,
+  "customDueDates": ["2023-12-18", "2024-01-18", "2024-02-18","2024-03-18"],
+  "customInstallmentPrice": [10.0, 50.0, 50.0,10.0]
+}
+```
+e se tudo der certo:
+
+`FORMATO DA RESPOSTA - STATUS 200`
+```json
+{
+  "id": 6,
+  "client": {
+    "name": "Marcio",
+    "id": 6
+  },
+  "products": [
+    {
+      "name": "bola",
+      "price": 20,
+      "amount": 1,
+      "id": 11
+    },
+    {
+      "name": "faca",
+      "price": 50,
+      "amount": 2,
+      "id": 12
+    }
+  ],
+  "totalPrice": 120,
+  "paymentMethod": "Parcelado",
+  "portion": 4,
+  "customDueDates": [
+    "2023-12-18",
+    "2024-01-18", 
+    "2024-02-18",
+    "2024-03-18"
+    ],
+  "customInstallmentPrice": [
+    10,
+    50,
+    50,
+    10
+  ],
+  "createdAt": "2023-10-19",
+  "updatedAt": "2023-10-19"
+}
+```
+
 <h2 align ='center'> Vendo todas as Vendas </h2>
 
 `GET /sales -  FORMATO DA REQUISIÇÃO`
